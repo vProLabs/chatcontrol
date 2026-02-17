@@ -1,36 +1,36 @@
-# English Language File for vChatUtils by vProLabs
-
-prefix: "&8[&cvProLabs&8] "
+# English messages for vChatUtils
 
 commands:
-  no-permission: "&cYou don't have permission to use this command!"
-  usage: "&cUsage: /chat <clear|on|off|status>"
-  unknown: "&cUnknown command. Usage: /chat <clear|on|off|status>"
+  usage: "%prefix% &cUsage: /chat <clear|on|off|status|reload>"
+  unknown: "%prefix% &cUnknown command. Use /chat for help."
 
   clear:
-    success: "&eChat has been cleared by &6%player%"
-    console: "Chat cleared by: %player%"
+    success: "%prefix% &aChat cleared by &e%player%&a!"
+    console: "[vChatUtils] Chat cleared by %player%"
 
   toggle:
-    enabled: "&eChat has been &aENABLED &eby &6%player%"
-    disabled: "&eChat has been &cDISABLED &eby &6%player%"
-    console-enabled: "Chat enabled by: %player%"
-    console-disabled: "Chat disabled by: %player%"
+    enabled: "%prefix% &aChat enabled by &e%player%&a!"
+    disabled: "%prefix% &cChat disabled by &e%player%&c!"
+    console-enabled: "[vChatUtils] Chat enabled by %player%"
+    console-disabled: "[vChatUtils] Chat disabled by %player%"
 
   status:
-    header: "&8&m==========&r &cvChatUtils &8&m=========="
+    header: "&8========== &cvChatUtils &8=========="
     chat: "&7Chat: %status%"
     join-messages: "&7Join messages: %status%"
+    leave-messages: "&7Leave messages: %status%"
     advancements: "&7Advancements: %status%"
-    footer: "&8&m==============================="
+    luckperms: "&7LuckPerms: %status%"
+    bypass-groups: "&7Bypass groups: &e%groups%"
+    footer: "&8=============================="
     enabled: "&aENABLED"
     disabled: "&cDISABLED"
-    hidden: "&aHIDDEN"
-    visible: "&cVISIBLE"
+    visible: "&aVISIBLE"
+    hidden: "&cHIDDEN"
 
 chat:
-  disabled: "&cChat is currently disabled!"
+  disabled: "%prefix% &cChat is currently disabled!"
 
 other:
-  reload-success: "&aConfig reloaded successfully!"
-  reload-fail: "&cFailed to reload config!"
+  reload-success: "%prefix% &aConfig reloaded successfully!"
+  reload-fail: "%prefix% &cFailed to reload config!"
