@@ -30,9 +30,10 @@ replay_pid*
 
 # Agent / skill artifacts
 .agents/
-.claude/
 skills-lock.json
-config/mcporter.json
+
+# OpenCode / AI config
+AGENTS.md
 
 # IDE / desktop artifacts
 .directory

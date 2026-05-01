@@ -23,6 +23,7 @@ luckperms-integration: true
 chat-slowmode: 3
 
 # Chat Format (MiniMessage) - {prefix} {suffix} {username} {message}
+enable-chat-format: true
 chat-format: "{prefix}{suffix}<white>{username}</white> <dark_gray>\u00bb</dark_gray> <white>{message}</white>"
 
 # Chat Filter (regex patterns)

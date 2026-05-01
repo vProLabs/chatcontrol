@@ -134,7 +134,9 @@ public class ChatManager implements Listener {
                 }
             }
 
-            applyChatFormat(event, player);
+            if (plugin.getConfigManager().isEnableChatFormat()) {
+                applyChatFormat(event, player);
+            }
         } catch (Throwable t) {
             BugReport.log(t, "onPlayerChat", "player=" + event.getPlayer().getName());
         }

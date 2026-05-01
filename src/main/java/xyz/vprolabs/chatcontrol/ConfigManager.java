@@ -20,6 +20,7 @@ public class ConfigManager {
     private int chatSlowmode;
     private List<String> chatFilter;
     private String chatFormat;
+    private boolean enableChatFormat;
 
     public ConfigManager(ChatControl plugin) {
         this.plugin = plugin;
@@ -42,6 +43,7 @@ public class ConfigManager {
             chatSlowmode = config.getInt("chat-slowmode", 0);
             chatFilter = config.getStringList("chat-filter");
             chatFormat = config.getString("chat-format", "{prefix}{suffix}<white>{username}</white> <dark_gray>\u00bb</dark_gray> <white>{message}</white>");
+            enableChatFormat = config.getBoolean("enable-chat-format", true);
         } catch (Throwable t) {
             BugReport.log(t, "ConfigManager.load");
         }
@@ -79,4 +81,5 @@ public class ConfigManager {
     public int getChatSlowmode() { return chatSlowmode; }
     public List<String> getChatFilter() { return chatFilter; }
     public String getChatFormat() { return chatFormat; }
+    public boolean isEnableChatFormat() { return enableChatFormat; }
 }
