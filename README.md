@@ -2,8 +2,8 @@
 
 <h1>ChatControl</h1>
 
-[![Version](https://img.shields.io/modrinth/v/chatcontrol?label=Version&color=24b47e)](https://modrinth.com/plugin/chatcontrol)
-[![Downloads](https://img.shields.io/modrinth/dt/chatcontrol?label=Downloads&color=24b47e)](https://modrinth.com/plugin/chatcontrol)
+[![Version](https://img.shields.io/modrinth/v/chat_control?label=Version&color=24b47e)](https://modrinth.com/plugin/chat_control)
+[![Downloads](https://img.shields.io/modrinth/dt/chat_control?label=Downloads&color=24b47e)](https://modrinth.com/plugin/chat_control)
 [![License](https://img.shields.io/badge/License-vProLabs%20General%20License-blue)](https://www.vprolabs.xyz/projects/license/raw)
 [![Java](https://img.shields.io/badge/Java-21-orange)](https://www.oracle.com/java/)
 [![Platform](https://img.shields.io/badge/Platform-Paper%20%2F%20Folia%20%2F%20Spigot-red)](https://papermc.io)
@@ -114,7 +114,7 @@ chat-filter:
 
 - 🌐 **Website:** https://vprolabs.xyz
 - 💬 **Discord:** https://discord.gg/SNzUYWbc5Q
-- 📦 **Modrinth:** https://modrinth.com/plugin/chatcontrol
+- 📦 **Modrinth:** https://modrinth.com/plugin/chat_control
 - ☕ **Support:** https://ko-fi.com/v4bi
 
 ---
