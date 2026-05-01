@@ -17,6 +17,8 @@ public class ChatControl extends JavaPlugin {
             instance = this;
 
             saveDefaultConfig();
+            ConfigMigrator.migrate(this);
+            reloadConfig();
 
             configManager = new ConfigManager(this);
             messageManager = new MessageManager(this);

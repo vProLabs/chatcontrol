@@ -148,8 +148,8 @@ public class ChatManager implements Listener {
 
     private void applyChatFormat(AsyncPlayerChatEvent event, Player player) {
         try {
+            if (!plugin.getConfigManager().isEnableChatFormat()) return;
             String format = plugin.getConfigManager().getChatFormat();
-            if (format == null || format.isEmpty()) return;
 
             String prefix = "";
             String suffix = "";
