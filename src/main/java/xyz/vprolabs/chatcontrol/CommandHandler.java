@@ -33,7 +33,12 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
             }
 
             if (args.length == 0) {
-                plugin.getMessageManager().send(sender, "commands.usage");
+                plugin.getMessageManager().send(sender, "commands.about.header");
+                plugin.getMessageManager().send(sender, "commands.about.version", "%version%", plugin.getDescription().getVersion());
+                plugin.getMessageManager().send(sender, "commands.about.author");
+                plugin.getMessageManager().send(sender, "commands.about.website");
+                plugin.getMessageManager().send(sender, "commands.about.discord");
+                plugin.getMessageManager().send(sender, "commands.about.help");
                 return true;
             }
 

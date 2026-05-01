@@ -10,6 +10,7 @@
 
 ### Bug Fixes
 - **Chat format**: Fixed legacy color codes (`&`) not rendering in chat — LuckPerms prefix/suffix now properly converted to section signs, serializer changed to `legacySection()`
+- **About page**: `/chatcontrol` or `/cc` with no args now shows plugin info (version, author, website, discord) — no permission required
 - **Clear chat**: Fixed clear sending `\n`-joined single message (client kept scrollback). Now sends 300 individual empty `Component` messages per player, pushing old lines out of scrollback. Added `/cc clear <player>` for per-player clearing
 
 ## 1.1.0 - Rebrand to ChatControl

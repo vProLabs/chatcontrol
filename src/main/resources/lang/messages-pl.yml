@@ -4,6 +4,13 @@
 commands:
   usage: "<prefix><red>Uzycie: /chatcontrol <clear|on|off|status|reload>"
   unknown: "<prefix><red>Nieznana komenda! Uzyj /chatcontrol aby uzyskac pomoc."
+  about:
+    header: "<gray>--- <color:#ff5555>ChatControl</color> ---"
+    version: "<gray>Wersja: <color:#ff5555><version>"
+    author: "<gray>Stworzone przez <color:#ff5555>vProLabs</color>"
+    website: "<gray>Strona: <color:#55ff55><click:open_url:https://vprolabs.xyz>https://vprolabs.xyz</click></color>"
+    discord: "<gray>Discord: <color:#55ff55><click:open_url:https://discord.gg/SNzUYWbc5Q>discord.gg/SNzUYWbc5Q</click>"
+    help: "<gray>Uzyj <color:#ff5555>/chatcontrol help</color> aby zobaczyc komendy"
   clear:
     success: "<prefix><green>Czat zostal wyczyszczony przez <yellow><player><green>."
     console: "<prefix><green>Czat zostal wyczyszczony przez <yellow>Konsole<green>."

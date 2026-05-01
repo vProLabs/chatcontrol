@@ -4,6 +4,13 @@
 commands:
   usage: "<prefix><red>Usage: /chatcontrol <clear|on|off|status|reload>"
   unknown: "<prefix><red>Unknown subcommand! Use /chatcontrol for help."
+  about:
+    header: "<gray>--- <color:#ff5555>ChatControl</color> ---"
+    version: "<gray>Version: <color:#ff5555><version>"
+    author: "<gray>Made by <color:#ff5555>vProLabs</color>"
+    website: "<gray>Website: <color:#55ff55><click:open_url:https://vprolabs.xyz>https://vprolabs.xyz</click></color>"
+    discord: "<gray>Discord: <color:#55ff55><click:open_url:https://discord.gg/SNzUYWbc5Q>discord.gg/SNzUYWbc5Q</click>"
+    help: "<gray>Use <color:#ff5555>/chatcontrol help</color> for commands"
   clear:
     success: "<prefix><green>Chat has been cleared by <yellow><player><green>."
     console: "<prefix><green>Chat has been cleared by <yellow>Console<green>."

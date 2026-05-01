@@ -42,6 +42,7 @@
 
 | Command | Description | Permission |
 |---------|-------------|------------|
+| `/chatcontrol` | Show plugin info (version, author, links) | Everyone |
 | `/chatcontrol clear` | Clear the chat | `chatcontrol.admin` |
 | `/chatcontrol on` | Enable chat | `chatcontrol.admin` |
 | `/chatcontrol off` | Disable chat | `chatcontrol.admin` |
