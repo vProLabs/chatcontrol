@@ -23,3 +23,8 @@
 - **Alias**: Added `/cc` alias (toggleable via `short-alias` in config)
 - **Removed**: Old `/czat` and `/vchat` aliases
 - **Platform**: Added guaranteed Spigot, Paper, and Purpur support (switched to Spigot API)
+
+### New Features
+- **Chat Formatting**: Configurable chat format with `{prefix}`, `{suffix}`, `{username}`, `{message}` placeholders
+- **PlaceholderAPI**: Full PlaceholderAPI integration for chat format placeholders
+- **Velocity/Bungeecord**: Listed as future support targets

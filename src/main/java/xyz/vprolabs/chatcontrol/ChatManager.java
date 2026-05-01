@@ -35,8 +35,7 @@ public class ChatManager implements Listener {
         }
 
         String playerName = sender.getName();
-        String msg = plugin.getMessageManager().getLegacy("commands.clear.success", "%player%", playerName);
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(msg));
+        plugin.getMessageManager().sendAll("commands.clear.success", "%player%", playerName);
         plugin.getLogger().info(playerName + " cleared the chat.");
     }
 
@@ -44,18 +43,15 @@ public class ChatManager implements Listener {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.sendMessage(CLEAR_BUFFER);
         }
-        String msg = plugin.getMessageManager().getLegacy("commands.clear.success", "%player%", "Console");
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(msg));
+        plugin.getMessageManager().sendAll("commands.clear.success", "%player%", "Console");
         plugin.getLogger().info("Console cleared the chat.");
     }
 
     public void toggleChat(CommandSender sender, boolean enable) {
         plugin.getConfigManager().saveChatEnabled(enable);
 
-        String playerName = sender.getName();
         String path = enable ? "commands.toggle.enabled" : "commands.toggle.disabled";
-        String msg = plugin.getMessageManager().getLegacy(path, "%player%", playerName);
-        Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(msg));
+        plugin.getMessageManager().sendAll(path, "%player%", sender.getName());
     }
 
     public void showStatus(CommandSender sender) {
@@ -84,7 +80,7 @@ public class ChatManager implements Listener {
     }
 
     private String serialize(Component component) {
-        return LegacyComponentSerializer.legacyAmpersand().serialize(component);
+        return LegacyComponentSerializer.legacySection().serialize(component);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -122,15 +118,36 @@ public class ChatManager implements Listener {
             }
         }
 
-        if (plugin.getConfigManager().isLuckPermsIntegration() &&
-            plugin.getLuckPermsManager().isHooked()) {
-            
-            String prefix = plugin.getLuckPermsManager().getPrefix(player);
-            String suffix = plugin.getLuckPermsManager().getSuffix(player);
-            
-            String format = prefix + player.getName() + suffix + " &8\u00bb &f%2$s";
-            event.setFormat(LegacyComponentSerializer.legacyAmpersand().serialize(MiniMessage.miniMessage().deserialize(format)));
+        applyChatFormat(event, player);
+    }
+
+    private void applyChatFormat(AsyncPlayerChatEvent event, Player player) {
+        String format = plugin.getConfigManager().getChatFormat();
+        if (format == null || format.isEmpty()) return;
+
+        String prefix = "";
+        String suffix = "";
+
+        if (plugin.getConfigManager().isLuckPermsIntegration() && plugin.getLuckPermsManager().isHooked()) {
+            prefix = plugin.getLuckPermsManager().getPrefix(player);
+            suffix = plugin.getLuckPermsManager().getSuffix(player);
         }
+
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            try {
+                Class<?> papi = Class.forName("me.clip.placeholderapi.PlaceholderAPI");
+                format = (String) papi.getMethod("setPlaceholders", org.bukkit.entity.Player.class, String.class)
+                    .invoke(null, player, format);
+            } catch (Exception ignored) {}
+        }
+
+        format = format.replace("{prefix}", prefix)
+                       .replace("{suffix}", suffix)
+                       .replace("{username}", "%1$s")
+                       .replace("{message}", "%2$s");
+
+        event.setFormat(LegacyComponentSerializer.legacyAmpersand().serialize(
+            MiniMessage.miniMessage().deserialize(format)));
     }
 
     @EventHandler

@@ -19,6 +19,7 @@ public class ConfigManager {
     private String currentLang;
     private int chatSlowmode;
     private List<String> chatFilter;
+    private String chatFormat;
 
     public ConfigManager(ChatControl plugin) {
         this.plugin = plugin;
@@ -39,6 +40,7 @@ public class ConfigManager {
         currentLang = config.getString("language", "en");
         chatSlowmode = config.getInt("chat-slowmode", 0);
         chatFilter = config.getStringList("chat-filter");
+        chatFormat = config.getString("chat-format", "{prefix}{suffix}<white>{username}</white> <dark_gray>\u00bb</dark_gray> <white>{message}</white>");
     }
 
     public void reload() {
@@ -64,4 +66,5 @@ public class ConfigManager {
     public String getCurrentLang() { return currentLang; }
     public int getChatSlowmode() { return chatSlowmode; }
     public List<String> getChatFilter() { return chatFilter; }
+    public String getChatFormat() { return chatFormat; }
 }

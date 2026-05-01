@@ -18,6 +18,8 @@
 
 ### TO-DO (in the future)
 - [Folia scheduler support]
+- [Velocity support]
+- [Bungeecord support]
 > These will be made in the future of this plugin, if you wanna support us to add these features faster then join our discord!
 
 ---

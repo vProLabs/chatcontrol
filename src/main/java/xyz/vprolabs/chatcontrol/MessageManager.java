@@ -4,9 +4,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.HashMap;
@@ -53,9 +55,9 @@ public class MessageManager {
         } else {
             messages = messageFiles.getOrDefault("en", new YamlConfiguration());
             if (messageFiles.isEmpty()) {
-                plugin.getLogger().severe("[ChatControl] No language files loaded!");
+                plugin.getLogger().severe("No language files loaded!");
             } else {
-                plugin.getLogger().warning("[ChatControl] Language '" + currentLang + "' not found! Using English.");
+                plugin.getLogger().warning("Language '" + currentLang + "' not found! Using English.");
             }
         }
     }
@@ -93,5 +95,12 @@ public class MessageManager {
 
     public void send(CommandSender sender, String path, String... placeholders) {
         sender.sendMessage(getLegacy(path, placeholders));
+    }
+
+    public void sendAll(String path, String... placeholders) {
+        String msg = getLegacy(path, placeholders);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            p.sendMessage(msg);
+        }
     }
 }
