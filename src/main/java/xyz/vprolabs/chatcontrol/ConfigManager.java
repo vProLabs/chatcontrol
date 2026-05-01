@@ -18,7 +18,9 @@ public class ConfigManager {
     private String prefix;
     private String currentLang;
     private int chatSlowmode;
+    private boolean enableChatSlowmode;
     private List<String> chatFilter;
+    private boolean enableChatFilter;
     private String chatFormat;
     private boolean enableChatFormat;
 
@@ -40,8 +42,10 @@ public class ConfigManager {
             luckPermsIntegration = config.getBoolean("luckperms-integration", false);
             prefix = config.getString("prefix", "<dark_gray>[<red>vProLabs<dark_gray>] ");
             currentLang = config.getString("language", "en");
-            chatSlowmode = config.getInt("chat-slowmode", 0);
+            chatSlowmode = config.getInt("chat-slowmode", 3);
+            enableChatSlowmode = config.getBoolean("enable-chat-slowmode", true);
             chatFilter = config.getStringList("chat-filter");
+            enableChatFilter = config.getBoolean("enable-chat-filter", true);
             chatFormat = config.getString("chat-format", "{prefix}{suffix}<white>{username}</white> <dark_gray>\u00bb</dark_gray> <white>{message}</white>");
             enableChatFormat = config.getBoolean("enable-chat-format", true);
         } catch (Throwable t) {
@@ -79,7 +83,9 @@ public class ConfigManager {
     public String getPrefix() { return prefix; }
     public String getCurrentLang() { return currentLang; }
     public int getChatSlowmode() { return chatSlowmode; }
+    public boolean isEnableChatSlowmode() { return enableChatSlowmode; }
     public List<String> getChatFilter() { return chatFilter; }
+    public boolean isEnableChatFilter() { return enableChatFilter; }
     public String getChatFormat() { return chatFormat; }
     public boolean isEnableChatFormat() { return enableChatFormat; }
 }

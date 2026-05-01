@@ -66,36 +66,57 @@
 <summary><b>View config.yml</b></summary>
 
 ```yaml
+# ============================================
 # ChatControl Configuration
-# Use MiniMessage format for prefix: <red>, <bold>, <gradient:gold:yellow>, etc.
+# ============================================
+# MiniMessage format guide:
+#   <red>, <green>, <blue>              - colors
+#   <bold>, <italic>, <underlined>      - styles
+#   <gradient:red:blue>                 - gradients
+#   <color:#ff0000>                     - hex colors
+# ============================================
 
-prefix: "<dark_gray>[<red>vProLabs<dark_gray>] "
+# --- General ---
+
+prefix: "<dark_gray>[<red>ChatControl<dark_gray>] "
 language: "en"
 
-# Commands Aliases
-polish-aliases: true
+# --- Commands ---
+
 english-aliases: true
+polish-aliases: true
 short-alias: true
 
-# Chat Settings
+# --- Chat Toggle ---
+
 chat-enabled: true
 hide-join-messages: false
 hide-leave-messages: false
 hide-advancements: false
 
-# Integrations
-luckperms-integration: true
+# --- Slowmode ---
 
-# Chat Settings
+enable-chat-slowmode: true
 chat-slowmode: 3
 
-# Chat Filter (regex patterns)
+# --- Chat Filter ---
+
+enable-chat-filter: true
 chat-filter:
   - "(?i)fuck"
   - "(?i)shit"
   - "(?i)asshole"
   - "(?i)nigger"
   - "(?i)discord\\.gg"
+
+# --- Chat Format ---
+
+enable-chat-format: true
+chat-format: "{prefix}{suffix}<white>{username}</white> <dark_gray>\u00bb</dark_gray> <white>{message}</white>"
+
+# --- Integrations ---
+
+luckperms-integration: true
 ```
 
 </details>

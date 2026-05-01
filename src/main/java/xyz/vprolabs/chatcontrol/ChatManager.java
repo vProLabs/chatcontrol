@@ -113,24 +113,28 @@ public class ChatManager implements Listener {
                 return;
             }
 
-            int slowmodeSeconds = plugin.getConfigManager().getChatSlowmode();
-            if (slowmodeSeconds > 0) {
-                long lastMessage = slowmodeCooldowns.getOrDefault(player.getUniqueId(), 0L);
-                long currentTime = System.currentTimeMillis();
-                if (currentTime - lastMessage < slowmodeSeconds * 1000L) {
-                    event.setCancelled(true);
-                    long secondsLeft = (slowmodeSeconds * 1000L - (currentTime - lastMessage)) / 1000L + 1;
-                    player.sendMessage(plugin.getMessageManager().getLegacy("chat.cooldown", "%seconds%", String.valueOf(secondsLeft)));
-                    return;
+            if (plugin.getConfigManager().isEnableChatSlowmode()) {
+                int slowmodeSeconds = plugin.getConfigManager().getChatSlowmode();
+                if (slowmodeSeconds > 0) {
+                    long lastMessage = slowmodeCooldowns.getOrDefault(player.getUniqueId(), 0L);
+                    long currentTime = System.currentTimeMillis();
+                    if (currentTime - lastMessage < slowmodeSeconds * 1000L) {
+                        event.setCancelled(true);
+                        long secondsLeft = (slowmodeSeconds * 1000L - (currentTime - lastMessage)) / 1000L + 1;
+                        player.sendMessage(plugin.getMessageManager().getLegacy("chat.cooldown", "%seconds%", String.valueOf(secondsLeft)));
+                        return;
+                    }
+                    slowmodeCooldowns.put(player.getUniqueId(), currentTime);
                 }
-                slowmodeCooldowns.put(player.getUniqueId(), currentTime);
             }
 
-            for (String pattern : plugin.getConfigManager().getChatFilter()) {
-                if (message.matches(".*" + pattern + ".*")) {
-                    event.setCancelled(true);
-                    player.sendMessage(plugin.getMessageManager().getLegacy("chat.filtered"));
-                    return;
+            if (plugin.getConfigManager().isEnableChatFilter()) {
+                for (String pattern : plugin.getConfigManager().getChatFilter()) {
+                    if (message.matches(".*" + pattern + ".*")) {
+                        event.setCancelled(true);
+                        player.sendMessage(plugin.getMessageManager().getLegacy("chat.filtered"));
+                        return;
+                    }
                 }
             }
 

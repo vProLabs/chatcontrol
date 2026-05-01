@@ -1,35 +1,70 @@
+# ============================================
 # ChatControl Configuration
-# Use MiniMessage format for prefix: <red>, <bold>, <gradient:gold:yellow>, etc.
+# ============================================
+# MiniMessage format guide:
+#   <red>, <green>, <blue>              - colors
+#   <bold>, <italic>, <underlined>      - styles
+#   <gradient:red:blue>                 - gradients
+#   <color:#ff0000>                     - hex colors
+# ============================================
 
-prefix: "<dark_gray>[<red>vProLabs<dark_gray>] "
+# --- General ---
+
+# Plugin-wide prefix shown before messages
+prefix: "<dark_gray>[<red>ChatControl<dark_gray>] "
+
+# Language file: "en" for English, "pl" for Polish (or add your own!)
 language: "en"
 
-# Commands Aliases
-polish-aliases: true
+# --- Commands ---
+
+# Enable /chatcontrol subcommand aliases in English (clear, on, off, status, reload)
 english-aliases: true
+
+# Enable /chatcontrol subcommand aliases in Polish (wyczysc, wlacz, wylacz, przeladuj)
+polish-aliases: true
+
+# Enable the short alias /cc for /chatcontrol (set false to disable)
 short-alias: true
 
-# Chat Settings
+# --- Chat Toggle ---
+
+# Start with chat enabled or disabled on server start
 chat-enabled: true
+
+# Hide join/leave messages and advancement announcements
 hide-join-messages: false
 hide-leave-messages: false
 hide-advancements: false
 
-# Integrations
-luckperms-integration: true
+# --- Slowmode ---
 
-# Advanced Features
-# Slowmode (cooldown between messages in seconds)
+# Enable cooldown between messages
+enable-chat-slowmode: true
+# Cooldown delay in seconds (requires enable-chat-slowmode: true)
 chat-slowmode: 3
 
-# Chat Format (MiniMessage) - {prefix} {suffix} {username} {message}
-enable-chat-format: true
-chat-format: "{prefix}{suffix}<white>{username}</white> <dark_gray>\u00bb</dark_gray> <white>{message}</white>"
+# --- Chat Filter ---
 
-# Chat Filter (regex patterns)
+# Enable word/link filtering with regex patterns
+enable-chat-filter: true
+# Regex patterns to block (requires enable-chat-filter: true)
 chat-filter:
   - "(?i)fuck"
   - "(?i)shit"
   - "(?i)asshole"
   - "(?i)nigger"
   - "(?i)discord\\.gg"
+
+# --- Chat Format ---
+
+# Enable custom chat formatting
+enable-chat-format: true
+# Chat format using MiniMessage (requires enable-chat-format: true)
+# Placeholders: {prefix} {suffix} {username} {message}
+chat-format: "{prefix}{suffix}<white>{username}</white> <dark_gray>\u00bb</dark_gray> <white>{message}</white>"
+
+# --- Integrations ---
+
+# Integrate with LuckPerms for prefix/suffix and group-based bypass
+luckperms-integration: true
