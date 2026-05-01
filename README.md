@@ -39,13 +39,13 @@
 
 | Command | Description | Permission |
 |---------|-------------|------------|
-| `/chat clear` | Clear the chat | `chatcontrol.admin` |
-| `/chat on` | Enable chat | `chatcontrol.admin` |
-| `/chat off` | Disable chat | `chatcontrol.admin` |
-| `/chat status` | Show plugin status | `chatcontrol.admin` |
-| `/chat reload` | Reload configuration | `chatcontrol.admin` |
+| `/chatcontrol clear` | Clear the chat | `chatcontrol.admin` |
+| `/chatcontrol on` | Enable chat | `chatcontrol.admin` |
+| `/chatcontrol off` | Disable chat | `chatcontrol.admin` |
+| `/chatcontrol status` | Show plugin status | `chatcontrol.admin` |
+| `/chatcontrol reload` | Reload configuration | `chatcontrol.admin` |
 
-*Alias: `/czat` = `/vchat` = `/chat`*
+*Alias: `/cc` = `/chatcontrol` (configurable via `short-alias` in config.yml)*
 
 ---
 
@@ -73,6 +73,7 @@ language: "en"
 # Commands Aliases
 polish-aliases: true
 english-aliases: true
+short-alias: true
 
 # Chat Settings
 chat-enabled: true

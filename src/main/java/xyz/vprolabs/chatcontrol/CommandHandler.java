@@ -17,13 +17,18 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
     public CommandHandler(ChatControl plugin) {
         this.plugin = plugin;
-        plugin.getCommand("chat").setExecutor(this);
-        plugin.getCommand("chat").setTabCompleter(this);
+        plugin.getCommand("chatcontrol").setExecutor(this);
+        plugin.getCommand("chatcontrol").setTabCompleter(this);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!command.getName().equalsIgnoreCase("chat")) return false;
+        if (!command.getName().equalsIgnoreCase("chatcontrol")) return false;
+
+        if (!plugin.getConfigManager().isShortAlias() && label.equalsIgnoreCase("cc")) {
+            sender.sendMessage(plugin.getMessageManager().get("commands.short-alias-disabled"));
+            return true;
+        }
 
         if (args.length == 0) {
             sender.sendMessage(plugin.getMessageManager().get("commands.usage"));

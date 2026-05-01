@@ -2,8 +2,8 @@
 # Use MiniMessage format: https://docs.advntr.dev/minimessage/format.html
 
 commands:
-  usage: "<prefix><red>Usage: /chat <clear|on|off|status|reload>"
-  unknown: "<prefix><red>Unknown subcommand! Use /chat for help."
+  usage: "<prefix><red>Usage: /chatcontrol <clear|on|off|status|reload>"
+  unknown: "<prefix><red>Unknown subcommand! Use /chatcontrol for help."
   clear:
     success: "<prefix><green>Chat has been cleared by <yellow><player><green>."
     console: "<prefix><green>Chat has been cleared by <yellow>Console<green>."
@@ -30,5 +30,6 @@ chat:
   filtered: "<prefix><red>Your message contains forbidden words!"
 
 other:
+  short-alias-disabled: "<prefix><red>The /cc alias is disabled. Use /chatcontrol instead."
   reload-success: "<prefix><green>Configuration and messages reloaded successfully!"
   reload-fail: "<prefix><red>Failed to reload configuration! Check console for details."

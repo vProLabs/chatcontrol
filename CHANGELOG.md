@@ -17,3 +17,8 @@
 - Cleaned up hardcoded log prefixes, config headers, and lang file headers
 - Increased default slowmode from 0 to 3 seconds
 - General code cleanup and consistency improvements
+
+### Changes
+- **Command**: Main command changed from `/chat` to `/chatcontrol`
+- **Alias**: Added `/cc` alias (toggleable via `short-alias` in config)
+- **Removed**: Old `/czat` and `/vchat` aliases

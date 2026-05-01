@@ -8,11 +8,11 @@ description: Advanced chat management plugin with multi-language support and Luc
 softdepend: [LuckPerms]
 
 commands:
-  chat:
+  chatcontrol:
     description: Manage chat settings
-    usage: /chat <clear|on|off|status|reload>
+    usage: /chatcontrol <clear|on|off|status|reload>
     permission: chatcontrol.admin
-    aliases: [czat, vchat]
+    aliases: [cc]
 
 permissions:
   chatcontrol.admin:

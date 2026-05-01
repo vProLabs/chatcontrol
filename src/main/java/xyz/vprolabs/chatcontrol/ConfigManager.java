@@ -13,6 +13,7 @@ public class ConfigManager {
     private boolean hideAdvancements;
     private boolean polishAliases;
     private boolean englishAliases;
+    private boolean shortAlias;
     private boolean luckPermsIntegration;
     private String prefix;
     private String currentLang;
@@ -32,6 +33,7 @@ public class ConfigManager {
         hideAdvancements = config.getBoolean("hide-advancements", false);
         polishAliases = config.getBoolean("polish-aliases", true);
         englishAliases = config.getBoolean("english-aliases", true);
+        shortAlias = config.getBoolean("short-alias", true);
         luckPermsIntegration = config.getBoolean("luckperms-integration", false);
         prefix = config.getString("prefix", "<dark_gray>[<red>vProLabs<dark_gray>] ");
         currentLang = config.getString("language", "en");
@@ -56,6 +58,7 @@ public class ConfigManager {
     public boolean isHideAdvancements() { return hideAdvancements; }
     public boolean isPolishAliases() { return polishAliases; }
     public boolean isEnglishAliases() { return englishAliases; }
+    public boolean isShortAlias() { return shortAlias; }
     public boolean isLuckPermsIntegration() { return luckPermsIntegration; }
     public String getPrefix() { return prefix; }
     public String getCurrentLang() { return currentLang; }

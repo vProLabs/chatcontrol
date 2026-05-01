@@ -2,8 +2,8 @@
 # Use MiniMessage format: https://docs.advntr.dev/minimessage/format.html
 
 commands:
-  usage: "<prefix><red>Uzycie: /chat <clear|on|off|status|reload>"
-  unknown: "<prefix><red>Nieznana komenda! Uzyj /chat aby uzyskać pomoc."
+  usage: "<prefix><red>Uzycie: /chatcontrol <clear|on|off|status|reload>"
+  unknown: "<prefix><red>Nieznana komenda! Uzyj /chatcontrol aby uzyskac pomoc."
   clear:
     success: "<prefix><green>Czat zostal wyczyszczony przez <yellow><player><green>."
     console: "<prefix><green>Czat zostal wyczyszczony przez <yellow>Konsole<green>."
@@ -30,5 +30,6 @@ chat:
   filtered: "<prefix><red>Twoja wiadomosc zawiera zabronione slowa!"
 
 other:
+  short-alias-disabled: "<prefix><red>Alias /cc jest wylaczony. Uzyj /chatcontrol."
   reload-success: "<prefix><green>Konfiguracja i wiadomosci zostaly przeladowane pomyslnie!"
   reload-fail: "<prefix><red>Blad podczas przeladowywania konfiguracji! Sprawdz konsole."
