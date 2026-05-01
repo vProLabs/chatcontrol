@@ -1,18 +1,5 @@
 # Changelog
 
-## 1.2.0 - Polish aliases disabled by default, chat format fix & allowed characters
-
-### Changes
-- **Polish aliases**: Now default to `false` (disabled). Toggle via `polish-aliases` in config.yml
-
-### New Features
-- **Allowed Characters**: New `enable-allowed-characters` filter (default: on). Whitelist regex blocks messages with characters outside allowed set — prevents homoglyph/unicode bypass of word filters
-
-### Bug Fixes
-- **Chat format**: Fixed legacy color codes (`&`) not rendering in chat — LuckPerms prefix/suffix now properly converted to section signs, serializer changed to `legacySection()`
-- **About page**: `/chatcontrol` or `/cc` with no args now shows plugin info (version, author, website, discord) — no permission required
-- **Clear chat**: Fixed clear sending `\n`-joined single message (client kept scrollback). Now sends 300 individual empty `Component` messages per player, pushing old lines out of scrollback. Added `/cc clear <player>` for per-player clearing
-
 ## 1.1.0 - Rebrand to ChatControl
 
 ### Major Changes
@@ -36,9 +23,17 @@
 - **Alias**: Added `/cc` alias (toggleable via `short-alias` in config)
 - **Removed**: Old `/czat` and `/vchat` aliases
 - **Platform**: Added guaranteed Spigot, Paper, and Purpur support (switched to Spigot API)
+- **Polish aliases**: Now default to `false` (disabled). Toggle via `polish-aliases` in config.yml
+- **Clear chat**: `/cc clear <player>` clears a specific player's chat
 
 ### New Features
 - **Chat Formatting**: Configurable chat format with `{prefix}`, `{suffix}`, `{username}`, `{message}` placeholders
 - **PlaceholderAPI**: Full PlaceholderAPI integration for chat format placeholders
 - **Velocity/Bungeecord**: Listed as future support targets
 - **Version Support**: Confirmed compatibility with Paper 1.21.x through 26.1.2
+- **Allowed Characters**: New `enable-allowed-characters` filter (default: on). Whitelist regex blocks messages with characters outside allowed set — prevents homoglyph/unicode bypass of word filters
+- **About page**: `/chatcontrol` or `/cc` with no args shows plugin info (version, author, website, discord) — no permission required
+
+### Bug Fixes
+- **Chat format**: Fixed legacy color codes (`&`) not rendering in chat — LuckPerms prefix/suffix now properly converted to section signs, serializer changed to `legacySection()`
+- **Clear chat**: Fixed clear sending `\n`-joined single message (client kept scrollback). Now sends 300 individual empty `Component` messages per player, pushing old lines out of scrollback
