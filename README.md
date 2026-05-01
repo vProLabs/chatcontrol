@@ -111,6 +111,13 @@ chat-filter:
   - "(?i)nigger"
   - "(?i)discord\\.gg"
 
+# --- Allowed Characters ---
+
+# Enable character whitelist to block unwanted symbols/homoglyphs
+enable-allowed-characters: true
+# Regex pattern of allowed characters (messages with any char outside this set are blocked)
+allowed-characters-regex: "^[a-zA-Z0-9\\s\\-_/\\\\.,!?;:'\"()\\[\\]{}@#$%^&*+=<>~`]+$"
+
 # --- Chat Format ---
 
 enable-chat-format: true
