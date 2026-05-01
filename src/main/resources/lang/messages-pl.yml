@@ -7,6 +7,8 @@ commands:
   clear:
     success: "<prefix><green>Czat zostal wyczyszczony przez <yellow><player><green>."
     console: "<prefix><green>Czat zostal wyczyszczony przez <yellow>Konsole<green>."
+    player: "<prefix><green>Wyczyszczono czat gracza <yellow><player><green>."
+    not-found: "<prefix><red>Nie znaleziono gracza!"
   toggle:
     enabled: "<prefix><green>Czat zostal wlaczony przez <yellow><player><green>."
     disabled: "<prefix><red>Czat zostal wylaczony przez <yellow><player><red>."
@@ -28,6 +30,7 @@ chat:
   disabled: "<prefix><red>Czat jest obecnie wylaczony!"
   cooldown: "<prefix><red>Poczekaj <yellow><seconds>s<red> przed wyslaniem kolejnej wiadomosci."
   filtered: "<prefix><red>Twoja wiadomosc zawiera zabronione slowa!"
+  allowed-characters: "<prefix><red>Twoja wiadomosc zawiera niedozwolone znaki!"
 
 other:
   short-alias-disabled: "<prefix><red>Alias /cc jest wylaczony. Uzyj /chatcontrol."

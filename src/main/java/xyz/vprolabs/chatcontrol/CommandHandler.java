@@ -1,5 +1,6 @@
 package xyz.vprolabs.chatcontrol;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -60,7 +61,18 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
             switch (sub) {
                 case "clear": case "wyczysc":
-                    if (sender instanceof Player) {
+                    if (args.length > 1) {
+                        Player target = Bukkit.getPlayer(args[1]);
+                        if (target == null) {
+                            plugin.getMessageManager().send(sender, "commands.clear.not-found");
+                            return true;
+                        }
+                        if (sender instanceof Player) {
+                            plugin.getChatManager().clearChat((Player) sender, target);
+                        } else {
+                            plugin.getChatManager().clearChatForConsole(target);
+                        }
+                    } else if (sender instanceof Player) {
                         plugin.getChatManager().clearChat((Player) sender);
                     } else {
                         plugin.getChatManager().clearChatForConsole();
@@ -102,6 +114,12 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                 }
                 return suggestions.stream()
                         .filter(s -> s.toLowerCase().startsWith(args[0].toLowerCase()))
+                        .collect(Collectors.toList());
+            }
+            if (args.length == 2 && (args[0].equalsIgnoreCase("clear") || args[0].equalsIgnoreCase("wyczysc"))) {
+                return Bukkit.getOnlinePlayers().stream()
+                        .map(Player::getName)
+                        .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
             }
         } catch (Throwable t) {

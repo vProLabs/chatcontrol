@@ -23,18 +23,24 @@ public class ChatManager implements Listener {
     private final ChatControl plugin;
     private final Map<UUID, Long> slowmodeCooldowns = new HashMap<>();
 
+    private static final int CLEAR_LINES = 300;
+
     public ChatManager(ChatControl plugin) {
         this.plugin = plugin;
     }
 
-    private static final String CLEAR_BUFFER = new String(new char[100]).replace("\0", "\n");
+    private void sendClear(Player target) {
+        Component blank = Component.text(" ");
+        for (int i = 0; i < CLEAR_LINES; i++) {
+            target.sendMessage(blank);
+        }
+    }
 
     public void clearChat(Player sender) {
         try {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(CLEAR_BUFFER);
+                sendClear(player);
             }
-
             plugin.getMessageManager().sendAll("commands.clear.success", "%player%", sender.getName());
             plugin.getLogger().info(sender.getName() + " cleared the chat.");
         } catch (Throwable t) {
@@ -42,10 +48,30 @@ public class ChatManager implements Listener {
         }
     }
 
+    public void clearChat(Player sender, Player target) {
+        try {
+            sendClear(target);
+            plugin.getMessageManager().send(sender, "commands.clear.player", "%player%", target.getName());
+            plugin.getLogger().info(sender.getName() + " cleared " + target.getName() + "'s chat.");
+        } catch (Throwable t) {
+            BugReport.log(t, "clearChat", "sender=" + sender.getName() + " target=" + target.getName());
+        }
+    }
+
+    public void clearChatForConsole(Player target) {
+        try {
+            sendClear(target);
+            plugin.getMessageManager().sendAll("commands.clear.success", "%player%", "Console");
+            plugin.getLogger().info("Console cleared " + target.getName() + "'s chat.");
+        } catch (Throwable t) {
+            BugReport.log(t, "clearChatForConsole", "target=" + target.getName());
+        }
+    }
+
     public void clearChatForConsole() {
         try {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                player.sendMessage(CLEAR_BUFFER);
+                sendClear(player);
             }
             plugin.getMessageManager().sendAll("commands.clear.success", "%player%", "Console");
             plugin.getLogger().info("Console cleared the chat.");
@@ -138,6 +164,14 @@ public class ChatManager implements Listener {
                 }
             }
 
+            if (plugin.getConfigManager().isEnableAllowedCharacters()) {
+                if (!plugin.getConfigManager().getAllowedCharactersPattern().matcher(message).matches()) {
+                    event.setCancelled(true);
+                    player.sendMessage(plugin.getMessageManager().getLegacy("chat.allowed-characters"));
+                    return;
+                }
+            }
+
             if (plugin.getConfigManager().isEnableChatFormat()) {
                 applyChatFormat(event, player);
             }
@@ -167,12 +201,12 @@ public class ChatManager implements Listener {
                 } catch (Exception ignored) {}
             }
 
-            format = format.replace("{prefix}", prefix)
-                           .replace("{suffix}", suffix)
+            format = format.replace("{prefix}", prefix.replace('&', '§'))
+                           .replace("{suffix}", suffix.replace('&', '§'))
                            .replace("{username}", "%1$s")
                            .replace("{message}", "%2$s");
 
-            event.setFormat(LegacyComponentSerializer.legacyAmpersand().serialize(
+            event.setFormat(LegacyComponentSerializer.legacySection().serialize(
                 MiniMessage.miniMessage().deserialize(format)));
         } catch (Throwable t) {
             BugReport.log(t, "applyChatFormat", "player=" + player.getName() + " format=" + plugin.getConfigManager().getChatFormat());

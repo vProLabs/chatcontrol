@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.2.0 - Polish aliases disabled by default, chat format fix & allowed characters
+
+### Changes
+- **Polish aliases**: Now default to `false` (disabled). Toggle via `polish-aliases` in config.yml
+
+### New Features
+- **Allowed Characters**: New `enable-allowed-characters` filter (default: on). Whitelist regex blocks messages with characters outside allowed set — prevents homoglyph/unicode bypass of word filters
+
+### Bug Fixes
+- **Chat format**: Fixed legacy color codes (`&`) not rendering in chat — LuckPerms prefix/suffix now properly converted to section signs, serializer changed to `legacySection()`
+- **Clear chat**: Fixed clear sending `\n`-joined single message (client kept scrollback). Now sends 300 individual empty `Component` messages per player, pushing old lines out of scrollback. Added `/cc clear <player>` for per-player clearing
+
 ## 1.1.0 - Rebrand to ChatControl
 
 ### Major Changes

@@ -3,6 +3,7 @@ package xyz.vprolabs.chatcontrol;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class ConfigManager {
 
@@ -23,6 +24,8 @@ public class ConfigManager {
     private boolean enableChatFilter;
     private String chatFormat;
     private boolean enableChatFormat;
+    private boolean enableAllowedCharacters;
+    private Pattern allowedCharactersPattern;
 
     public ConfigManager(ChatControl plugin) {
         this.plugin = plugin;
@@ -36,7 +39,7 @@ public class ConfigManager {
             hideJoinMessages = config.getBoolean("hide-join-messages", false);
             hideLeaveMessages = config.getBoolean("hide-leave-messages", false);
             hideAdvancements = config.getBoolean("hide-advancements", false);
-            polishAliases = config.getBoolean("polish-aliases", true);
+            polishAliases = config.getBoolean("polish-aliases", false);
             englishAliases = config.getBoolean("english-aliases", true);
             shortAlias = config.getBoolean("short-alias", true);
             luckPermsIntegration = config.getBoolean("luckperms-integration", false);
@@ -48,6 +51,9 @@ public class ConfigManager {
             enableChatFilter = config.getBoolean("enable-chat-filter", true);
             chatFormat = config.getString("chat-format", "{prefix}{suffix}<white>{username}</white> <dark_gray>\u00bb</dark_gray> <white>{message}</white>");
             enableChatFormat = config.getBoolean("enable-chat-format", true);
+            enableAllowedCharacters = config.getBoolean("enable-allowed-characters", true);
+            String patternStr = config.getString("allowed-characters-regex", "^[a-zA-Z0-9\\s\\-_/\\\\.,!?;:'\"()\\[\\]{}@#$%^&*+=<>~`]+$");
+            allowedCharactersPattern = Pattern.compile(patternStr);
         } catch (Throwable t) {
             BugReport.log(t, "ConfigManager.load");
         }
@@ -88,4 +94,6 @@ public class ConfigManager {
     public boolean isEnableChatFilter() { return enableChatFilter; }
     public String getChatFormat() { return chatFormat; }
     public boolean isEnableChatFormat() { return enableChatFormat; }
+    public boolean isEnableAllowedCharacters() { return enableAllowedCharacters; }
+    public Pattern getAllowedCharactersPattern() { return allowedCharactersPattern; }
 }

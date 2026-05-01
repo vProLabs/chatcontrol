@@ -7,6 +7,8 @@ commands:
   clear:
     success: "<prefix><green>Chat has been cleared by <yellow><player><green>."
     console: "<prefix><green>Chat has been cleared by <yellow>Console<green>."
+    player: "<prefix><green>Cleared <yellow><player><green>'s chat."
+    not-found: "<prefix><red>Player not found!"
   toggle:
     enabled: "<prefix><green>Chat has been enabled by <yellow><player><green>."
     disabled: "<prefix><red>Chat has been disabled by <yellow><player><red>."
@@ -28,6 +30,7 @@ chat:
   disabled: "<prefix><red>Chat is currently disabled!"
   cooldown: "<prefix><red>Please wait <yellow><seconds>s<red> before sending another message."
   filtered: "<prefix><red>Your message contains forbidden words!"
+  allowed-characters: "<prefix><red>Your message contains disallowed characters!"
 
 other:
   short-alias-disabled: "<prefix><red>The /cc alias is disabled. Use /chatcontrol instead."

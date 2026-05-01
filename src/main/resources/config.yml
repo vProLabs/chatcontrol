@@ -22,7 +22,8 @@ language: "en"
 english-aliases: true
 
 # Enable /chatcontrol subcommand aliases in Polish (wyczysc, wlacz, wylacz, przeladuj)
-polish-aliases: true
+# Default: false (change to true to enable Polish aliases)
+polish-aliases: false
 
 # Enable the short alias /cc for /chatcontrol (set false to disable)
 short-alias: true
@@ -55,6 +56,13 @@ chat-filter:
   - "(?i)asshole"
   - "(?i)nigger"
   - "(?i)discord\\.gg"
+
+# --- Allowed Characters ---
+
+# Enable character whitelist to block unwanted symbols/homoglyphs
+enable-allowed-characters: true
+# Regex pattern of allowed characters (messages with any char outside this set are blocked)
+allowed-characters-regex: "^[a-zA-Z0-9\\s\\-_/\\\\.,!?;:'\"()\\[\\]{}@#$%^&*+=<>~`]+$"
 
 # --- Chat Format ---
 

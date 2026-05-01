@@ -30,6 +30,7 @@
 - **Chat Toggle**, Enable/disable chat globally with broadcast notifications
 - **Message Hiding**, Hide join/leave messages and advancement announcements
 - **Chat Filter**, Regex-based word and link filtering with configurable patterns
+- **Allowed Characters**, Whitelist-based character filter to block homoglyph/unicode bypass attempts
 - **Slowmode**, Cooldown between messages with configurable delay
 - **Bypass System**, Permission and LuckPerms group-based bypass for disabled chat
 - **Multi-Language**, English and Polish built-in, easy to add more via lang files
@@ -84,7 +85,7 @@ language: "en"
 # --- Commands ---
 
 english-aliases: true
-polish-aliases: true
+polish-aliases: false
 short-alias: true
 
 # --- Chat Toggle ---
