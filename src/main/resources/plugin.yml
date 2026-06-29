@@ -4,8 +4,8 @@ main: xyz.vprolabs.chatcontrol.ChatControl
 api-version: "1.21"
 author: vProLabs
 description: Advanced chat management plugin with multi-language support and LuckPerms integration
-
-softdepend: [LuckPerms, PlaceholderAPI]
+load: STARTUP
+softdepend: [vAPI, LuckPerms, PlaceholderAPI]
 
 commands:
   chatcontrol:
