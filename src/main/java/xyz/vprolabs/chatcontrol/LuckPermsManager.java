@@ -41,7 +41,7 @@ public class LuckPermsManager {
                 plugin.getLogger().warning("[ChatControl] LuckPerms integration enabled but LuckPerms not found!");
                 hooked = false;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "LuckPermsManager.setup");
         }
     }
@@ -49,44 +49,53 @@ public class LuckPermsManager {
     public boolean isHooked() { return hooked; }
 
     public String getPrefix(Player player) {
-        if (!hooked) return "";
-        User user = luckPerms.getUserManager().getUser(player.getUniqueId());
-        if (user != null) {
-            String prefix = user.getCachedData().getMetaData().getPrefix();
-            return prefix != null ? prefix : "";
-        }
+        if (!hooked || luckPerms == null) return "";
+        try {
+            User user = luckPerms.getUserManager().getUser(player.getUniqueId());
+            if (user != null) {
+                String prefix = user.getCachedData().getMetaData().getPrefix();
+                return prefix != null ? prefix : "";
+            }
+        } catch (Exception ignored) {}
         return "";
     }
 
     public String getSuffix(Player player) {
-        if (!hooked) return "";
-        User user = luckPerms.getUserManager().getUser(player.getUniqueId());
-        if (user != null) {
-            String suffix = user.getCachedData().getMetaData().getSuffix();
-            return suffix != null ? suffix : "";
-        }
+        if (!hooked || luckPerms == null) return "";
+        try {
+            User user = luckPerms.getUserManager().getUser(player.getUniqueId());
+            if (user != null) {
+                String suffix = user.getCachedData().getMetaData().getSuffix();
+                return suffix != null ? suffix : "";
+            }
+        } catch (Exception ignored) {}
         return "";
     }
 
     public boolean hasChatBypass(Player player) {
         if (player.hasPermission("chatcontrol.bypass")) return true;
-        if (!hooked) return false;
+        if (!hooked || luckPerms == null) return false;
 
-        User user = luckPerms.getUserManager().getUser(player.getUniqueId());
-        if (user != null) {
-            return user.getInheritedGroups(user.getQueryOptions()).stream()
-                    .anyMatch(group -> group.getCachedData().getPermissionData().checkPermission("chatcontrol.bypass").asBoolean());
-        }
+        try {
+            User user = luckPerms.getUserManager().getUser(player.getUniqueId());
+            if (user != null) {
+                return user.getInheritedGroups(user.getQueryOptions()).stream()
+                        .anyMatch(group -> group.getCachedData().getPermissionData().checkPermission("chatcontrol.bypass").asBoolean());
+            }
+        } catch (Exception ignored) {}
         return false;
     }
 
     public String getBypassGroups() {
-        if (!hooked) return "LuckPerms not enabled";
-        Collection<Group> loadedGroups = luckPerms.getGroupManager().getLoadedGroups();
-
-        return loadedGroups.stream()
-                .filter(group -> group.getCachedData().getPermissionData().checkPermission("chatcontrol.bypass").asBoolean())
-                .map(Group::getName)
-                .collect(Collectors.joining(", "));
+        if (!hooked || luckPerms == null) return "LuckPerms not enabled";
+        try {
+            Collection<Group> loadedGroups = luckPerms.getGroupManager().getLoadedGroups();
+            return loadedGroups.stream()
+                    .filter(group -> group.getCachedData().getPermissionData().checkPermission("chatcontrol.bypass").asBoolean())
+                    .map(Group::getName)
+                    .collect(Collectors.joining(", "));
+        } catch (Exception e) {
+            return "Error fetching groups";
+        }
     }
 }

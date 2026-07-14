@@ -14,14 +14,15 @@ import org.bukkit.event.player.PlayerAdvancementDoneEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 public class ChatManager implements Listener {
 
     private final ChatControl plugin;
-    private final Map<UUID, Long> slowmodeCooldowns = new HashMap<>();
+    private final Map<UUID, Long> slowmodeCooldowns = new ConcurrentHashMap<>();
 
     private static final int CLEAR_LINES = 300;
 
@@ -43,7 +44,7 @@ public class ChatManager implements Listener {
             }
             plugin.getMessageManager().sendAll("commands.clear.success", "%player%", sender.getName());
             plugin.getLogger().info(sender.getName() + " cleared the chat.");
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "clearChat", "sender=" + sender.getName());
         }
     }
@@ -53,7 +54,7 @@ public class ChatManager implements Listener {
             sendClear(target);
             plugin.getMessageManager().send(sender, "commands.clear.player", "%player%", target.getName());
             plugin.getLogger().info(sender.getName() + " cleared " + target.getName() + "'s chat.");
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "clearChat", "sender=" + sender.getName() + " target=" + target.getName());
         }
     }
@@ -63,7 +64,7 @@ public class ChatManager implements Listener {
             sendClear(target);
             plugin.getMessageManager().sendAll("commands.clear.success", "%player%", "Console");
             plugin.getLogger().info("Console cleared " + target.getName() + "'s chat.");
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "clearChatForConsole", "target=" + target.getName());
         }
     }
@@ -75,7 +76,7 @@ public class ChatManager implements Listener {
             }
             plugin.getMessageManager().sendAll("commands.clear.success", "%player%", "Console");
             plugin.getLogger().info("Console cleared the chat.");
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "clearChatForConsole");
         }
     }
@@ -86,7 +87,7 @@ public class ChatManager implements Listener {
 
             String path = enable ? "commands.toggle.enabled" : "commands.toggle.disabled";
             plugin.getMessageManager().sendAll(path, "%player%", sender.getName());
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "toggleChat", "enable=" + enable + " sender=" + sender.getName());
         }
     }
@@ -115,7 +116,7 @@ public class ChatManager implements Listener {
             }
 
             mm.send(sender, "commands.status.footer");
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "showStatus", "sender=" + sender.getName());
         }
     }
@@ -129,53 +130,56 @@ public class ChatManager implements Listener {
         try {
             Player player = event.getPlayer();
             String message = event.getMessage();
+            ConfigManager cm = plugin.getConfigManager();
+            MessageManager mm = plugin.getMessageManager();
 
             if (player.hasPermission("chatcontrol.admin")) return;
 
-            if (!plugin.getConfigManager().isChatEnabled() &&
+            if (!cm.isChatEnabled() &&
                 !plugin.getLuckPermsManager().hasChatBypass(player)) {
                 event.setCancelled(true);
-                player.sendMessage(plugin.getMessageManager().getLegacy("chat.disabled"));
+                player.sendMessage(mm.getLegacy("chat.disabled"));
                 return;
             }
 
-            if (plugin.getConfigManager().isEnableChatSlowmode()) {
-                int slowmodeSeconds = plugin.getConfigManager().getChatSlowmode();
+            if (cm.isEnableChatSlowmode()) {
+                int slowmodeSeconds = cm.getChatSlowmode();
                 if (slowmodeSeconds > 0) {
-                    long lastMessage = slowmodeCooldowns.getOrDefault(player.getUniqueId(), 0L);
                     long currentTime = System.currentTimeMillis();
-                    if (currentTime - lastMessage < slowmodeSeconds * 1000L) {
+                    Long previous = slowmodeCooldowns.put(player.getUniqueId(), currentTime);
+                    if (previous != null && currentTime - previous < slowmodeSeconds * 1000L) {
+                        slowmodeCooldowns.put(player.getUniqueId(), previous);
                         event.setCancelled(true);
-                        long secondsLeft = (slowmodeSeconds * 1000L - (currentTime - lastMessage)) / 1000L + 1;
-                        player.sendMessage(plugin.getMessageManager().getLegacy("chat.cooldown", "%seconds%", String.valueOf(secondsLeft)));
-                        return;
-                    }
-                    slowmodeCooldowns.put(player.getUniqueId(), currentTime);
-                }
-            }
-
-            if (plugin.getConfigManager().isEnableChatFilter()) {
-                for (String pattern : plugin.getConfigManager().getChatFilter()) {
-                    if (message.matches(".*" + pattern + ".*")) {
-                        event.setCancelled(true);
-                        player.sendMessage(plugin.getMessageManager().getLegacy("chat.filtered"));
+                        long secondsLeft = (slowmodeSeconds * 1000L - (currentTime - previous)) / 1000L + 1;
+                        player.sendMessage(mm.getLegacy("chat.cooldown", "%seconds%", String.valueOf(secondsLeft)));
                         return;
                     }
                 }
             }
 
-            if (plugin.getConfigManager().isEnableAllowedCharacters()) {
-                if (!plugin.getConfigManager().getAllowedCharactersPattern().matcher(message).matches()) {
+            if (cm.isEnableChatFilter()) {
+                for (String pattern : cm.getChatFilter()) {
+                    if (message.matches(".*" + Pattern.quote(pattern) + ".*")) {
+                        event.setCancelled(true);
+                        player.sendMessage(mm.getLegacy("chat.filtered"));
+                        return;
+                    }
+                }
+            }
+
+            if (cm.isEnableAllowedCharacters()) {
+                Pattern allowedPattern = cm.getAllowedCharactersPattern();
+                if (allowedPattern != null && !allowedPattern.matcher(message).matches()) {
                     event.setCancelled(true);
-                    player.sendMessage(plugin.getMessageManager().getLegacy("chat.allowed-characters"));
+                    player.sendMessage(mm.getLegacy("chat.allowed-characters"));
                     return;
                 }
             }
 
-            if (plugin.getConfigManager().isEnableChatFormat()) {
+            if (cm.isEnableChatFormat()) {
                 applyChatFormat(event, player);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "onPlayerChat", "player=" + event.getPlayer().getName());
         }
     }
@@ -201,15 +205,27 @@ public class ChatManager implements Listener {
                 } catch (Exception ignored) {}
             }
 
-            format = format.replace("{prefix}", prefix.replace('&', '§'))
-                           .replace("{suffix}", suffix.replace('&', '§'))
+            format = format.replace("{prefix}", toMiniMessage(prefix))
+                           .replace("{suffix}", toMiniMessage(suffix))
                            .replace("{username}", "%1$s")
                            .replace("{message}", "%2$s");
 
             event.setFormat(LegacyComponentSerializer.legacySection().serialize(
                 MiniMessage.miniMessage().deserialize(format)));
-        } catch (Throwable t) {
-            BugReport.log(t, "applyChatFormat", "player=" + player.getName() + " format=" + plugin.getConfigManager().getChatFormat());
+        } catch (Exception t) {
+            BugReport.log(t, "applyChatFormat", "player=" + player.getName());
+        }
+    }
+
+    private String toMiniMessage(String input) {
+        if (input == null || input.isEmpty()) return "";
+        if (input.contains("<") && input.contains(">") && !input.contains("\u00a7")) return input;
+        String normalized = input.replace('&', '\u00a7');
+        try {
+            Component component = LegacyComponentSerializer.legacySection().deserialize(normalized);
+            return MiniMessage.miniMessage().serialize(component);
+        } catch (Exception e) {
+            return normalized;
         }
     }
 
@@ -219,7 +235,7 @@ public class ChatManager implements Listener {
             if (plugin.getConfigManager().isHideJoinMessages()) {
                 event.setJoinMessage(null);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "onPlayerJoin", "player=" + event.getPlayer().getName());
         }
     }
@@ -227,10 +243,11 @@ public class ChatManager implements Listener {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         try {
+            slowmodeCooldowns.remove(event.getPlayer().getUniqueId());
             if (plugin.getConfigManager().isHideLeaveMessages()) {
                 event.setQuitMessage(null);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "onPlayerQuit", "player=" + event.getPlayer().getName());
         }
     }
@@ -245,7 +262,7 @@ public class ChatManager implements Listener {
                     plugin.getLogger().warning("Advancement hiding requires Paper or fork.");
                 }
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "onAdvancement", "player=" + event.getPlayer().getName());
         }
     }

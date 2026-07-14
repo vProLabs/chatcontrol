@@ -11,6 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 public final class BugReport {
     private static final String DISCORD = "https://discord.gg/SNzUYWbc5Q";
+    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
 
     private BugReport() {}
 
@@ -21,7 +22,7 @@ public final class BugReport {
     public static void log(Throwable error, String context, String extra) {
         ChatControl plugin = ChatControl.getInstance();
         if (plugin == null) {
-            error.printStackTrace();
+            System.err.println("[ChatControl] " + error.getClass().getName() + ": " + error.getMessage());
             return;
         }
 
@@ -29,6 +30,10 @@ public final class BugReport {
 
         try {
             File file = new File(plugin.getDataFolder(), "bugreport.txt");
+            if (file.exists() && file.length() > MAX_FILE_SIZE) {
+                File rotated = new File(plugin.getDataFolder(), "bugreport.old.txt");
+                file.renameTo(rotated);
+            }
             boolean newFile = !file.exists();
             try (PrintWriter pw = new PrintWriter(new FileWriter(file, true))) {
                 if (newFile) {
@@ -60,11 +65,13 @@ public final class BugReport {
 
         String msg = "§c[ChatControl] §7An error occurred! Check console for details.";
         String msg2 = "§c[ChatControl] §7Report at: " + DISCORD;
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            if (p.hasPermission("chatcontrol.admin")) {
-                p.sendMessage(msg);
-                p.sendMessage(msg2);
+        Bukkit.getScheduler().runTask(plugin, () -> {
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                if (p.hasPermission("chatcontrol.admin")) {
+                    p.sendMessage(msg);
+                    p.sendMessage(msg2);
+                }
             }
-        }
+        });
     }
 }

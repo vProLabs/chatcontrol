@@ -61,7 +61,7 @@ public class MessageManager {
                     plugin.getLogger().warning("Language '" + currentLang + "' not found! Using English.");
                 }
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "MessageManager.load");
         }
     }
@@ -70,7 +70,7 @@ public class MessageManager {
         try {
             String msg = messages.getString(path, "<red>Missing message: " + path);
             return miniMessage.deserialize(msg, Placeholder.parsed("prefix", plugin.getConfigManager().getPrefix()));
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "MessageManager.get", "path=" + path);
             return Component.text("<red>Error loading message: " + path);
         }
@@ -97,7 +97,7 @@ public class MessageManager {
             }
             
             return component;
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "MessageManager.get", "path=" + path);
             return Component.text("<red>Error loading message: " + path);
         }
@@ -117,7 +117,7 @@ public class MessageManager {
             for (Player p : Bukkit.getOnlinePlayers()) {
                 p.sendMessage(msg);
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "MessageManager.sendAll", "path=" + path);
         }
     }

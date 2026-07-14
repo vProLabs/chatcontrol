@@ -20,7 +20,7 @@ public class ChatControl extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        File vapiFile = new File("plugins", "vAPI.jar");
+        File vapiFile = new File(getDataFolder().getParentFile(), "vAPI.jar");
         if (!vapiFile.exists()) {
             getLogger().info("╔══════════════════════════════════════════╗");
             getLogger().info("║  vAPI not found! Auto-downloading...    ║");
@@ -85,7 +85,7 @@ public class ChatControl extends JavaPlugin {
 
             getLogger().info("[ChatControl] Plugin enabled! Version " + getDescription().getVersion() + " by vProLabs");
             getLogger().info("[ChatControl] Language: " + configManager.getCurrentLang().toUpperCase());
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "Plugin enable");
             getLogger().severe("[ChatControl] Failed to enable plugin!");
             getServer().getPluginManager().disablePlugin(this);

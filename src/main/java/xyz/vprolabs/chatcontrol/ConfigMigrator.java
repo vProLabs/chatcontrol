@@ -10,15 +10,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.Map;
-import java.util.Set;
+
 
 public final class ConfigMigrator {
 
     private ConfigMigrator() {}
 
     private static final String OLD_NAME = "vChatUtils";
-    private static final String NEW_NAME = "ChatControl";
 
     public static void migrate(JavaPlugin plugin) {
         File dataFolder = plugin.getDataFolder();
@@ -52,9 +50,11 @@ public final class ConfigMigrator {
                 }
 
                 File oldBak = new File(parent, OLD_NAME + "_old");
-                oldFolder.renameTo(oldBak);
-
-                plugin.getLogger().info("Migration complete. Old config backed up to " + oldBak.getName());
+                if (!oldFolder.renameTo(oldBak)) {
+                    plugin.getLogger().warning("Could not rename old vChatUtils folder to " + oldBak.getName());
+                } else {
+                    plugin.getLogger().info("Old config backed up to " + oldBak.getName());
+                }
             } catch (Exception e) {
                 plugin.getLogger().warning("Config migration failed: " + e.getMessage());
             }
@@ -73,7 +73,10 @@ public final class ConfigMigrator {
             InputStream defStream = plugin.getClass().getClassLoader().getResourceAsStream("config.yml");
             if (defStream == null) return;
 
-            FileConfiguration defaults = YamlConfiguration.loadConfiguration(new InputStreamReader(defStream, StandardCharsets.UTF_8));
+            FileConfiguration defaults;
+            try (InputStreamReader reader = new InputStreamReader(defStream, StandardCharsets.UTF_8)) {
+                defaults = YamlConfiguration.loadConfiguration(reader);
+            }
             boolean changed = false;
 
             for (String key : defaults.getKeys(true)) {
@@ -102,8 +105,10 @@ public final class ConfigMigrator {
             }
         } else {
             try {
-                Files.copy(src.toPath(), dst.toPath());
-            } catch (Exception ignored) {}
+                Files.copy(src.toPath(), dst.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            } catch (Exception e) {
+                System.err.println("[ChatControl] Failed to copy " + src.getName() + ": " + e.getMessage());
+            }
         }
     }
 }

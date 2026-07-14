@@ -43,7 +43,10 @@ public class ConfigManager {
             englishAliases = config.getBoolean("english-aliases", true);
             shortAlias = config.getBoolean("short-alias", true);
             luckPermsIntegration = config.getBoolean("luckperms-integration", false);
-            prefix = config.getString("prefix", "<dark_gray>[<red>vProLabs<dark_gray>] ");
+            prefix = config.getString("prefix");
+            if (prefix == null || prefix.isEmpty()) {
+                prefix = "<dark_gray>[<red>vProLabs<dark_gray>] ";
+            }
             currentLang = config.getString("language", "en");
             chatSlowmode = config.getInt("chat-slowmode", 3);
             enableChatSlowmode = config.getBoolean("enable-chat-slowmode", true);
@@ -52,9 +55,17 @@ public class ConfigManager {
             chatFormat = config.getString("chat-format", "{prefix}{suffix}<white>{username}</white> <dark_gray>\u00bb</dark_gray> <white>{message}</white>");
             enableChatFormat = config.getBoolean("enable-chat-format", true);
             enableAllowedCharacters = config.getBoolean("enable-allowed-characters", true);
-            String patternStr = config.getString("allowed-characters-regex", "^[a-zA-Z0-9\\s\\-_/\\\\.,!?;:'\"()\\[\\]{}@#$%^&*+=<>~`]+$");
-            allowedCharactersPattern = Pattern.compile(patternStr);
-        } catch (Throwable t) {
+            String patternStr = config.getString("allowed-characters-regex");
+            if (patternStr == null || patternStr.isEmpty()) {
+                patternStr = "^[a-zA-Z0-9\\s\\-_/\\\\.,!?;:'\"()\\[\\]{}@#$%^&*+=<>~`]+$";
+            }
+            try {
+                allowedCharactersPattern = Pattern.compile(patternStr);
+            } catch (Exception e) {
+                plugin.getLogger().warning("Invalid allowed-characters-regex, using default: " + e.getMessage());
+                allowedCharactersPattern = Pattern.compile("^[a-zA-Z0-9\\s\\-_/\\\\.,!?;:'\"()\\[\\]{}@#$%^&*+=<>~`]+$");
+            }
+        } catch (Exception t) {
             BugReport.log(t, "ConfigManager.load");
         }
     }
@@ -63,7 +74,7 @@ public class ConfigManager {
         try {
             plugin.reloadConfig();
             load();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "ConfigManager.reload");
         }
     }
@@ -73,7 +84,7 @@ public class ConfigManager {
             chatEnabled = enabled;
             plugin.getConfig().set("chat-enabled", enabled);
             plugin.saveConfig();
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "saveChatEnabled", "enabled=" + enabled);
         }
     }

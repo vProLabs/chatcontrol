@@ -60,6 +60,12 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
             }
 
             if (!valid) {
+                switch (sub) {
+                    case "status": case "info": valid = true; break;
+                }
+            }
+
+            if (!valid) {
                 plugin.getMessageManager().send(sender, "commands.unknown");
                 return true;
             }
@@ -104,7 +110,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                     plugin.getMessageManager().send(sender, "commands.unknown");
                     return true;
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "onCommand", "sender=" + sender.getName() + " args=" + String.join(" ", args));
             sender.sendMessage("§c[ChatControl] §7An internal error occurred. Check bugreport.txt.");
             return true;
@@ -132,7 +138,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                         .filter(s -> s.toLowerCase().startsWith(args[1].toLowerCase()))
                         .collect(Collectors.toList());
             }
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "onTabComplete");
         }
         return new ArrayList<>();
@@ -146,7 +152,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
             plugin.getMessageManager().send(sender, "other.reload-success");
             plugin.getLogger().info("[ChatControl] Config reloaded by " + sender.getName());
-        } catch (Throwable t) {
+        } catch (Exception t) {
             BugReport.log(t, "reload", "sender=" + sender.getName());
             plugin.getMessageManager().send(sender, "other.reload-fail");
         }
