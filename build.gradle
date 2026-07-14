@@ -27,7 +27,6 @@ dependencies {
     compileOnly "net.kyori:adventure-text-minimessage:4.17.0"
     compileOnly "net.luckperms:api:5.4"
     implementation "org.json:json:20240303"
-    compileOnly files("../../vAPI/build/libs/vAPI-1.0.0.jar")
 }
 
 def targetJavaVersion = 21
